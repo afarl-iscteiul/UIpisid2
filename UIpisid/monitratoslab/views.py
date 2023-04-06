@@ -53,7 +53,7 @@ def novaexperiencia(request):
     if request.method == 'POST':
         experiencia = Experiencia()
         experiencia.descricao = request.POST['descricao']
-        experiencia.investigador = request.POST['investigador']
+        experiencia.investigador = request.user.username
         experiencia.datahora = datetime.now()
         experiencia.numeroratos = request.POST['numeroratos']
         experiencia.limiteratossala = request.POST['limiteratossala']
