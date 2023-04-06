@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Main</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'monitratoslab/css/style.css' %}" />
+</head>
+
+<body>
+    <h1>Bem-vindo, {{utilizador.nomeutilizador}}</h1>
+    <h3>
+        {% if utilizador.tipoutilizador == 'Inv' %}
+            Investigador
+<!--    CARF - Supostamente o código nunca vai entrar nestas condições -->
+        {% elif utilizador.tipoutilizador == 'Tec' %}
+            Técnico
+        {% else %}
+            Administrador
+        {% endif %}
+    </h3>
+    <br>
+    <aside>
+        {% block content %}
+            <div class="xpto">
+                <a href="{% url 'monitratoslab:paginalogout' %}">
+                    <button> Logout </button>
+                </a>
+<!--            CARF - Falta mudar o URL-->
+                <a href="{% url 'monitratoslab:novaexperiencia' %}">
+                    <button> Nova Experiência </button>
+                </a>
+            </div>
+        {% endblock %}
+    </aside>
+    <h2>Lista de experiências:</h2>
+    <br>
+    {% if experiencias %}
+        <table border="1">
+            <tr>
+                <th>ID</th>
+                <th>Data Registo</th>
+                <th>Descrição</th>
+                <th>Data Início</th>
+                <th>Data Fim</th>
+                <th>Motivo Término</th>
+                <th>Modo de Alerta</th>
+            </tr>
+            {% for e in experiencias %}
+                {% if utilizador.emailutilizador == e.investigador %}
+                    <tr>
+                        <th>{{e.idexperiencia}}</th>
+                        <th>{{e.datahora}}</th>
+                        <th>{{e.descricao}}</th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+<!--                    CARF - Fazer quando tiver o níveis de alerta feitos -->
+                        <th></th>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+        </table>
+    {% else %}
+        <p style="text-align: center">Não existem experiência submetidas</p>
+    {% endif%}
+    <br>
+</body>
+</html>

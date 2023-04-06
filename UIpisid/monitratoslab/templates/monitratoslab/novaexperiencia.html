@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Registo de nova experiência</title>
+    <style>
+        form {
+            display: table;
+        }
+
+        p {
+            display: table-row;
+        }
+
+        label {
+            display: table-cell;
+        }
+
+        input {
+            display: table-cell;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Registo de nova experiência</h1>
+<form method="post" action="{% url 'monitratoslab:novaexperiencia' %}">
+    {% csrf_token %}
+    <p>
+        <label for="numeroratos">Número de Ratos:</label>
+        <input type="number" id="numeroratos" name="numeroratos" required>
+    </p>
+    <p>
+        <label for="temperaturaideal">Temperatura Ideal (ºC):</label>
+        <input type="number" id="temperaturaideal" name="temperaturaideal" step="0.01" required>
+    </p>
+    <p>
+        <label for="variacaotemperaturamaxima">Variação da Temperatura Máxima(ºC):</label>
+        <input type="number" id="variacaotemperaturamaxima" name="variacaotemperaturamaxima" step="0.01" required>
+    </p>
+    <p>
+        <label for="segundossemmovimento">Tempo sem Movimento(s):</label>
+        <input type="number" id="segundossemmovimento" name="segundossemmovimento" required>
+    </p>
+    <p>
+        <label for="limiteratossala">Número máximo de ratos por Sala:</label>
+        <input type="number" id="limiteratossala" name="limiteratossala" required>
+    </p>
+    <p>
+        <label for="descricao">Descrição:</label>
+        <textarea id="descricao" name="descricao" rows="4" cols="50"></textarea>
+    </p>
+
+
+    <label for="investigador">Investigador:</label><br>
+    <input type="text" id="investigador" name="investigador" required><br>
+
+    <!--  <label for="datahora">Data/Hora:</label><br>-->
+    <!--  <input type="datetime-local" id="datahora" name="datahora" required><br>-->
+
+
+    <input type="submit" value="Criar">
+</form>
+
+</body>
+</html>

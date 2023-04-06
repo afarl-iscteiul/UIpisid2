@@ -1,0 +1,43 @@
+/* Formulários */
+div.form {
+    display: block;
+    text-align: center;
+}
+
+form {
+    display: inline-block;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+
+input {
+    margin-bottom: 10px;
+    width: 250px;
+    height: 35px;
+    box-sizing: border-box
+}
+
+
+/*Tabelas*/
+table{
+    width: 100%;
+    border-collapse: collapse;
+}
+
+/*Aside*/
+body aside {
+    width: 10%;
+    float: right;
+}
+
+/*Botões*/
+div.xpto {
+    display: block;
+    text-align: center;
+}
+
+body aside button {
+    width: 125px;
+    margin-bottom: 5px;
+}

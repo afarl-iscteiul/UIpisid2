@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'monitratoslab/css/style.css' %}" />
+</head>
+<body>
+    <h1 style="text-align: center">Projecto</h1>
+    <h1 style="text-align: center">Monitorização de Ratos em Laboratório</h1>
+    <br>
+    {% block content %}
+        <div class="form">
+            <form action="{% url 'monitratoslab:paginalogin' %}" method="post">
+                {% csrf_token %}
+                <input class="input" type="text" name="username" id="username_id" placeholder="Email do utilizador"/>
+                <br>
+                <input class="input" type="text" name="password" id="password_id" placeholder="Password"/>
+                <br>
+                <input type="submit" value="Login" />
+            </form>
+        </div>
+    {% endblock %}
+</body>
+</html>
