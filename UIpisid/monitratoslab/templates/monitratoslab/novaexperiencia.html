@@ -3,35 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <title>Registo de nova experiência</title>
-    <style>
-        form {
-            display: table;
-        }
 
-        p {
-            display: table-row;
-        }
+    <!--    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">-->
+    <!--    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">-->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
-        label {
-            display: table-cell;
-        }
+    <!--    <style>-->
+    <!--        form {-->
+    <!--            display: table;-->
+    <!--        }-->
 
-        input {
-            display: table-cell;
-        }
+    <!--        p {-->
+    <!--            display: table-row;-->
+    <!--        }-->
 
-        .column {
-            float: left;
-            width: 50%;
-        }
+    <!--        label {-->
+    <!--            display: table-cell;-->
+    <!--        }-->
 
-        /* Clear floats after the columns */
-        .row:after {
-            content: "";
-            display: table;
-            clear: both;
-        }
-    </style>
+    <!--        input {-->
+    <!--            display: table-cell;-->
+    <!--        }-->
+
+    <!--        .column {-->
+    <!--            float: left;-->
+    <!--            width: 50%;-->
+    <!--        }-->
+
+    <!--        /* Clear floats after the columns */-->
+    <!--        .row:after {-->
+    <!--            content: "";-->
+    <!--            display: table;-->
+    <!--            clear: both;-->
+    <!--        }-->
+    <!--    </style>-->
 </head>
 <body>
 
@@ -69,7 +74,7 @@
         </div>
     </div>
     <div>
-        <div class="column">
+        <div name="Registo de odores nas salas" class="column">
             <h2>Registo de odores nas salas</h2>
             {% for i in num_salas %}
             <label for="sala_{{ i }}">Sala {{ i }}:</label>
@@ -77,20 +82,24 @@
             <br>
             {% endfor %}
         </div>
-        <div class="column">
+        <div name="Registo de substancias administradas aos ratos" class="column">
             <h2>Registo de substancias administradas aos ratos</h2>
             <p>
                 <label for="ratossemsubstancias">Número de ratos sem substâncias injetadas:</label>
                 <input type="number" id="ratossemsubstancias" name="ratossemsubstancias" required>
             </p>
-            <p>
-                <label for="substancia">Substância:</label>
-                <input type="text" id="substancia" name="substancia" required>
-            </p>
-            <p>
-                <label for="numeroratossubstancia">Número de ratos:</label>
-                <input type="number" id="numeroratossubstancia" name="numeroratossubstancia" required>
-            </p>
+            <div>
+                <div id="linha">
+                    <label for="substancia2">Substância:</label>
+                    <input type="text" id="substancia2" name="substancia2" required>
+                    <label for="numeroratossubstancia2">Número de ratos:</label>
+                    <input type="number" id="numeroratossubstancia2" name="numeroratossubstancia2" required>
+                    <button id="DeleteRow" type="button">Remover</button>
+                </div>
+                <div id="newinput"></div>
+                <button id="rowAdder" type="button">Adicionar</button>
+            </div>
+
         </div>
     </div>
     <div class="row" name="modo de alertas">
@@ -111,7 +120,7 @@
                 <label for="minima">Mínima</label>
             </p>
         </div>
-        <div name="gravidade">
+        <div class="column" name="gravidade">
             <h3>Gravidade</h3>
             <p>
                 <input type="radio" id="grav_alta" name="grav_alta" value="grav_alta">
@@ -133,5 +142,36 @@
     <button type="submit">Enviar</button>
     <input type="submit" value="Criar">
 </form>
+<br>
+
+<!--<form>-->
+<!--    <div id="linha">-->
+<!--        <label for="substancia2">Substância:</label>-->
+<!--        <input type="text" id="substancia2" name="substancia2" required>-->
+<!--        <label for="numeroratossubstancia2">Número de ratos:</label>-->
+<!--        <input type="number" id="numeroratossubstancia2" name="numeroratossubstancia2" required>-->
+<!--        <button id="DeleteRow" type="button">Remover</button>-->
+<!--    </div>-->
+<!--    <div id="newinput"></div>-->
+<!--    <button id="rowAdder" type="button">Adicionar</button>-->
+<!--</form>-->
+
+
+<script type="text/javascript">
+    $("#rowAdder").click(function () {
+        newRowAdd =
+            '<div id="linha">' +
+            '<label for="substancia2">Substância: </label><input type="text" id="substancia2" name="substancia2" required>' +
+            '<label for="numeroratossubstancia2"> Número de ratos: </label><input type="number" id="numeroratossubstancia2" name="numeroratossubstancia2" required>' +
+            ' ' + '<button id="DeleteRow" type="button">Remover</button></div>';
+
+        $('#newinput').append(newRowAdd);
+    });
+
+    $("body").on("click", "#DeleteRow", function () {
+        $(this).parents("#linha").remove();
+    })
+</script>
+
 </body>
 </html>
