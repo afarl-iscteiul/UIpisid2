@@ -97,8 +97,8 @@ def novaexperiencia(request):
             odoresexperiencia.idexperiencia = experiencia
             odoresexperiencia.codigoodor = request.POST.get(f'sala_{i}', '')
             odoresexperiencia.save()
-#-----------------
 
+        # ADICIONA SUBSTANCIA
         substancia = request.POST.getlist('substancia[]')
         numratos = request.POST.getlist('numratos[]')
         substanciasexperiencia = Substanciasexperiencia()
@@ -107,8 +107,7 @@ def novaexperiencia(request):
             substanciasexperiencia.numeroratos = numratos[i]
             substanciasexperiencia.idexperiencia = experiencia
             substanciasexperiencia.save()
-#-------------
-
+        # FIM ADICIONA SUBSTANCIA
 
         return redirect('monitratoslab:detalheexperiencia')
     else:
@@ -125,28 +124,6 @@ def selecionarutilizador(request):
     mail_request_user = request.user.email
     utilizador = Utilizador.objects.get(emailutilizador__startswith=mail_request_user)
     return utilizador
-
-
-from django.shortcuts import render, redirect
-from django.http import HttpResponse
-
-
-def save_data(request):
-    if request.method == 'POST':
-        names = request.POST.getlist('name[]')
-        ages = request.POST.getlist('age[]')
-        substanciasexperiencia = Substanciasexperiencia()
-        for i in range(len(names)):
-            substanciasexperiencia.codigosubstancia = names[i]
-            substanciasexperiencia.numeroratos = ages[i]
-            # substanciasexperiencia.idexperiencia =
-            substanciasexperiencia.save()
-
-        return redirect('success-page')  # replace 'success-page' with the URL name of your success page
-    else:
-        return HttpResponse('Error: invalid request method.')
-# fechtbd = conexaobd(request)
-# num_salas = fechtbd[0][0]
 
 # q = Experiencia(descricao = "estrato de hibisco", investigador = "adelade", datahora =timezone.now(), numeroratos = 10, limiteratossala = 20, segundossemmovimento = 5, temperaturaideal = 35, variacaotemperaturamaxima = 6)
 # q.save()
