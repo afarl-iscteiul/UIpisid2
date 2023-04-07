@@ -7,7 +7,7 @@ from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout
 from django.utils import timezone
 
-from .models import Experiencia, Utilizador, Parametrosadicionais, Odoresexperiencia
+from .models import Experiencia, Utilizador, Parametrosadicionais, Odoresexperiencia, Substanciasexperiencia
 
 import pymysql
 
@@ -15,17 +15,25 @@ import pymysql
 # Create your views here.
 def index(request):
     utilizador = selecionarutilizador(request)  # CARF - Pode estar numa session, menos pesquisas na base de dados
-    experiencias = Experiencia.objects.filter(investigador=utilizador.emailutilizador).values('idexperiencia', 'datahora', 'descricao')
+    experiencias = Experiencia.objects.filter(investigador=utilizador.emailutilizador).values('idexperiencia',
+                                                                                              'datahora', 'descricao')
     if experiencias.count() > 0:
         flag = True
         for i in experiencias:
             id = i['idexperiencia']
             if flag:
-                param_adicionais = Parametrosadicionais.objects.filter(idexperiencia=id).values('idexperiencia', 'datahorainicio', 'datahorafim', 'razaofim')
+                param_adicionais = Parametrosadicionais.objects.filter(idexperiencia=id).values('idexperiencia',
+                                                                                                'datahorainicio',
+                                                                                                'datahorafim',
+                                                                                                'razaofim')
                 flag = False
             else:
-                param_adicionais |= Parametrosadicionais.objects.filter(idexperiencia=id).values('idexperiencia', 'datahorainicio', 'datahorafim', 'razaofim')
-    return render(request, 'monitratoslab/index.html', {'param_adicionais': param_adicionais, 'experiencias': experiencias, 'utilizador': utilizador})
+                param_adicionais |= Parametrosadicionais.objects.filter(idexperiencia=id).values('idexperiencia',
+                                                                                                 'datahorainicio',
+                                                                                                 'datahorafim',
+                                                                                                 'razaofim')
+    return render(request, 'monitratoslab/index.html',
+                  {'param_adicionais': param_adicionais, 'experiencias': experiencias, 'utilizador': utilizador})
 
 
 def autenticacao(request):
@@ -68,7 +76,7 @@ def paginalogout(request):
 def novaexperiencia(request):
     fechtbd = conexaobd(request)
     salas = fechtbd[0][0]
-    num_salas = list(range(1, salas+1))
+    num_salas = list(range(1, salas + 1))
     context = {'num_salas': num_salas}
     if request.method == 'POST':
 
@@ -89,11 +97,22 @@ def novaexperiencia(request):
             odoresexperiencia.idexperiencia = experiencia
             odoresexperiencia.codigoodor = request.POST.get(f'sala_{i}', '')
             odoresexperiencia.save()
+#-----------------
+
+        substancia = request.POST.getlist('substancia[]')
+        numratos = request.POST.getlist('numratos[]')
+        substanciasexperiencia = Substanciasexperiencia()
+        for i in range(len(substancia)):
+            substanciasexperiencia.codigosubstancia = substancia[i]
+            substanciasexperiencia.numeroratos = numratos[i]
+            substanciasexperiencia.idexperiencia = experiencia
+            substanciasexperiencia.save()
+#-------------
+
 
         return redirect('monitratoslab:detalheexperiencia')
     else:
         return render(request, 'monitratoslab/novaexperiencia.html', context)
-
 
 
 def detalheexperiencia(request):
@@ -107,6 +126,25 @@ def selecionarutilizador(request):
     utilizador = Utilizador.objects.get(emailutilizador__startswith=mail_request_user)
     return utilizador
 
+
+from django.shortcuts import render, redirect
+from django.http import HttpResponse
+
+
+def save_data(request):
+    if request.method == 'POST':
+        names = request.POST.getlist('name[]')
+        ages = request.POST.getlist('age[]')
+        substanciasexperiencia = Substanciasexperiencia()
+        for i in range(len(names)):
+            substanciasexperiencia.codigosubstancia = names[i]
+            substanciasexperiencia.numeroratos = ages[i]
+            # substanciasexperiencia.idexperiencia =
+            substanciasexperiencia.save()
+
+        return redirect('success-page')  # replace 'success-page' with the URL name of your success page
+    else:
+        return HttpResponse('Error: invalid request method.')
 # fechtbd = conexaobd(request)
 # num_salas = fechtbd[0][0]
 

@@ -9,6 +9,7 @@ urlpatterns = [
     path('novaexperiencia/', views.novaexperiencia, name='novaexperiencia'),
     path('detalheexperiencia/', views.detalheexperiencia, name='detalheexperiencia'),
     path('autenticacao', views.autenticacao, name='autenticacao'),
+    path('save_data', views.save_data, name='save_data'),
 
 
 ]

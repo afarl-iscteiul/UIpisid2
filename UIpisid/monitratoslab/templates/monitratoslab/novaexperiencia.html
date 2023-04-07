@@ -88,18 +88,33 @@
                 <label for="ratossemsubstancias">Número de ratos sem substâncias injetadas:</label>
                 <input type="number" id="ratossemsubstancias" name="ratossemsubstancias" required>
             </p>
-            <div>
-                <div id="linha">
-                    <label for="substancia2">Substância:</label>
-                    <input type="text" id="substancia2" name="substancia2" required>
-                    <label for="numeroratossubstancia2">Número de ratos:</label>
-                    <input type="number" id="numeroratossubstancia2" name="numeroratossubstancia2" required>
-                    <button id="DeleteRow" type="button">Remover</button>
-                </div>
-                <div id="newinput"></div>
-                <button id="rowAdder" type="button">Adicionar</button>
-            </div>
+            <!--            ANTIGO CODIGO PARA ADICIONAR SUBSTANCIAS-->
+            <!--            <div>-->
+            <!--                <div id="linha">-->
+            <!--                    <label class="number"></label>-->
+            <!--                    <label for="substancia_1">Substância_{{ number }}:</label>-->
+            <!--                    <input type="text" id="substancia_1" name="substancia_1" required>-->
+            <!--                    <label for="numeroratossubstancia_1">Número de ratos:</label>-->
+            <!--                    <input type="number" id="numeroratossubstancia_1" name="numeroratossubstancia_1" required>-->
+            <!--                    <button id="DeleteRow" type="button">Remover</button>-->
+            <!--                    <label class="number"></label>-->
 
+            <!--                </div>-->
+            <!--                <div id="newinput"></div>-->
+            <!--                <button id="rowAdder" type="button">Adicionar</button>-->
+            <!--            </div>-->
+
+            <!--    #CAMPO NOVO PARA ADICIONAR SUBSTANCIAS-->
+            <div id="input_fields">
+                <div>
+                    <label for="substancia">Substancia:</label>
+                    <input type="text" id="substancia" name="substancia[]">
+                    <label for="numratos">Número de ratos:</label>
+                    <input type="number" id="numratos" name="numratos[]">
+                </div>
+            </div>
+            <button id="add_button" type="button">Adicionar</button>
+            <!--  ###    ###    ###   ###       ###    ###    ###   ###  -->
         </div>
     </div>
     <div class="row" name="modo de alertas">
@@ -137,30 +152,25 @@
             </p>
         </div>
     </div>
-    <button type="submit">Enviar</button>
+
+
+    <!--    <button type="submit">Enviar</button>-->
     <input type="submit" value="Criar">
 </form>
 <br>
 
-<!--<form>-->
-<!--    <div id="linha">-->
-<!--        <label for="substancia2">Substância:</label>-->
-<!--        <input type="text" id="substancia2" name="substancia2" required>-->
-<!--        <label for="numeroratossubstancia2">Número de ratos:</label>-->
-<!--        <input type="number" id="numeroratossubstancia2" name="numeroratossubstancia2" required>-->
-<!--        <button id="DeleteRow" type="button">Remover</button>-->
-<!--    </div>-->
-<!--    <div id="newinput"></div>-->
-<!--    <button id="rowAdder" type="button">Adicionar</button>-->
-<!--</form>-->
-
-
 <script type="text/javascript">
+
+    $(".number").each(function (index) {
+        let n = index + 1;
+        $(this).text(n);
+    });
+
     $("#rowAdder").click(function () {
         newRowAdd =
             '<div id="linha">' +
-            '<label for="substancia2">Substância: </label><input type="text" id="substancia2" name="substancia2" required>' +
-            '<label for="numeroratossubstancia2"> Número de ratos: </label><input type="number" id="numeroratossubstancia2" name="numeroratossubstancia2" required>' +
+            '<label class="number" for="substancia_{{number}}">Substância: </label><input class="number" type="text" id="substancia_{{number}}" name="substancia_{{number}}" required>' +
+            '<label class="number" for="numeroratossubstancia_{{number}}"> Número de ratos: </label><input class="number" type="number" id="numeroratossubstancia_{{number}}" name="numeroratossubstancia_{{number}}" required>' +
             ' ' + '<button id="DeleteRow" type="button">Remover</button></div>';
 
         $('#newinput').append(newRowAdd);
@@ -169,7 +179,34 @@
     $("body").on("click", "#DeleteRow", function () {
         $(this).parents("#linha").remove();
     })
+    //     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 </script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        var addButton = $('#add_button');
+        var wrapper = $('#input_fields');
+
+        // Add a new set of input fields when the "Add" button is clicked
+        $(addButton).click(function () {
+            // var newInput = '<div><input type="text" name="name[]" placeholder="Name"><input type="text" name="age[]" placeholder="Age"><a href="#" class="remove_field">Remove</a></div>';
+            var newInput = '<div>' +
+                '<label htmlFor="substancia">Substancia: </label><input type="text" name="substancia[]">' + ' ' +
+                '<label htmlFor="numratos">Número de ratos: </label><input type="text" name="numratos[]">' +
+                '<button href="#" class="remove_field" type="button">Remover</button>' +
+                '</div>';
+            $(wrapper).append(newInput);
+        });
+
+
+        // Remove the corresponding set of input fields when the "Remove" link is clicked
+        $(wrapper).on('click', '.remove_field', function (e) {
+            e.preventDefault();
+            $(this).parent('div').remove();
+        });
+    });
+</script>
+
 
 </body>
 </html>
