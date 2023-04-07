@@ -68,29 +68,65 @@
             <textarea id="descricao" name="descricao" rows="4" cols="50"></textarea>
         </div>
     </div>
-
-    <div class="column">
-        <h2>Registo de odores nas salas</h2>
-       {% for i in range(num_salas) %}
+    <div>
+        <div class="column">
+            <h2>Registo de odores nas salas</h2>
+            {% for i in num_salas %}
             <label for="sala_{{ i }}">Sala {{ i }}:</label>
             <input type="text" id="sala_{{ i }}" name="sala_{{ i }}">
             <br>
-        {% endfor %}
+            {% endfor %}
+        </div>
+        <div class="column">
+            <h2>Registo de substancias administradas aos ratos</h2>
+            <p>
+                <label for="ratossemsubstancias">Número de ratos sem substâncias injetadas:</label>
+                <input type="number" id="ratossemsubstancias" name="ratossemsubstancias" required>
+            </p>
+            <p>
+                <label for="substancia">Substância:</label>
+                <input type="text" id="substancia" name="substancia" required>
+            </p>
+            <p>
+                <label for="numeroratossubstancia">Número de ratos:</label>
+                <input type="number" id="numeroratossubstancia" name="numeroratossubstancia" required>
+            </p>
+        </div>
     </div>
-    <div class="column">
-        <h2>Registo de substancias administradas aos ratos</h2>
-        <p>
-            <label for="ratossemsubstancias">Número de ratos sem substâncias injetadas:</label>
-            <input type="number" id="ratossemsubstancias" name="ratossemsubstancias" required>
-        </p>
-        <p>
-            <label for="substancia">Substância:</label>
-            <input type="text" id="substancia" name="substancia" required>
-        </p>
-        <p>
-            <label for="numeroratossubstancia">Número de ratos:</label>
-            <input type="number" id="numeroratossubstancia" name="numeroratossubstancia" required>
-        </p>
+    <div name="modo de alertas">
+        <h2>Modo de Alertas</h2>
+        <div name="periodicidade">
+            <h3>Periodicidade</h3>
+            <p>
+                <input type="radio" id="maxima" name="maxima" value="maxima">
+                <label for="maxima">Máxima</label>
+            </p>
+            <p>
+                <input type="radio" id="media" name="media" value="media">
+                <label for="media">Média</label>
+            </p>
+
+            <p>
+                <input type="radio" id="minima" name="minima" value="minima">
+                <label for="minima">Mínima</label>
+            </p>
+        </div>
+        <div name="gravidade">
+            <h3>Gravidade</h3>
+            <p>
+                <input type="radio" id="grav_alta" name="grav_alta" value="grav_alta">
+                <label for="grav_alta">Alta</label>
+            </p>
+            <p>
+                <input type="radio" id="grav_media" name="grav_media" value="grav_media">
+                <label for="media">Média e superiores</label>
+            </p>
+
+            <p>
+                <input type="radio" id="grav_baixa" name="grav_baixa" value="grav_baixa">
+                <label for="grav_baixa">Baixa e superiores</label>
+            </p>
+        </div>
     </div>
 
 

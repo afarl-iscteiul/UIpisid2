@@ -62,10 +62,11 @@ def paginalogout(request):
     request.session.flush()
     return HttpResponseRedirect(reverse('monitratoslab:paginalogin'))
 
-  #fechtbd = conexaobd(request)
-    #num_salas = fechtbd[0][0]
+
 def novaexperiencia(request):
-    num_salas = 5
+    fechtbd = conexaobd(request)
+    salas = fechtbd[0][0]
+    num_salas = list(range(1, salas))
     context = {'num_salas': num_salas}
     if request.method == 'POST':
         for i in range(num_salas):
