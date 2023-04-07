@@ -47,7 +47,7 @@
                 <th>Modo de Alerta</th>
             </tr>
             {% for e in experiencias %}
-                {% if utilizador.emailutilizador == e.investigador %}
+<!--                {% if utilizador.emailutilizador == e.investigador %}-->
                     <tr>
                         <th>{{e.idexperiencia}}</th>
                         <th>{{e.datahora}}</th>
@@ -58,7 +58,7 @@
 <!--                    CARF - Fazer quando tiver o níveis de alerta feitos -->
                         <th></th>
                     </tr>
-                {% endif %}
+<!--                {% endif %}-->
             {% endfor %}
         </table>
     {% else %}

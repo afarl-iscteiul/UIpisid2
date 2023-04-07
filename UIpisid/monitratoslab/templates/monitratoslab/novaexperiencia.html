@@ -69,9 +69,33 @@
         </div>
     </div>
 
+    <div class="column">
+        <h2>Registo de odores nas salas</h2>
+       {% for i in range(num_salas) %}
+            <label for="sala_{{ i }}">Sala {{ i }}:</label>
+            <input type="text" id="sala_{{ i }}" name="sala_{{ i }}">
+            <br>
+        {% endfor %}
+    </div>
+    <div class="column">
+        <h2>Registo de substancias administradas aos ratos</h2>
+        <p>
+            <label for="ratossemsubstancias">Número de ratos sem substâncias injetadas:</label>
+            <input type="number" id="ratossemsubstancias" name="ratossemsubstancias" required>
+        </p>
+        <p>
+            <label for="substancia">Substância:</label>
+            <input type="text" id="substancia" name="substancia" required>
+        </p>
+        <p>
+            <label for="numeroratossubstancia">Número de ratos:</label>
+            <input type="number" id="numeroratossubstancia" name="numeroratossubstancia" required>
+        </p>
+    </div>
 
+
+    <button type="submit">Enviar</button>
     <input type="submit" value="Criar">
 </form>
-
 </body>
 </html>
