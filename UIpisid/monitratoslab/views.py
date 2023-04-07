@@ -14,20 +14,22 @@ import pymysql
 
 # Create your views here.
 def index(request):
-    experiencias = Experiencia.objects.all()
     utilizador = selecionarutilizador(request)  # CARF - Pode estar numa session, menos pesquisas na base de dados
-    param_adicionais = Parametrosadicionais.objects.all()
+    experiencias = Experiencia.objects.filter(investigador=utilizador.emailutilizador).values('idexperiencia', 'datahora', 'descricao')
+    if experiencias.count() > 0:
+        flag = True
+        for i in experiencias:
+            id = i['idexperiencia']
+            if flag:
+                param_adicionais = Parametrosadicionais.objects.filter(idexperiencia=id).values('idexperiencia', 'datahorainicio', 'datahorafim', 'razaofim')
+                flag = False
+            else:
+                param_adicionais |= Parametrosadicionais.objects.filter(idexperiencia=id).values('idexperiencia', 'datahorainicio', 'datahorafim', 'razaofim')
+    return render(request, 'monitratoslab/index.html', {'param_adicionais': param_adicionais, 'experiencias': experiencias, 'utilizador': utilizador})
 
-    exp = Experiencia.objects.get(pk=6)
-    print(exp.idexperiencia)
 
-    # x = exp.parametrosadicionais_set.all()
-    # print(x)
-    # z = Parametrosadicionais.objects.filter(experiencia__idexperiencia__exact=6)
-    # print(z)
-
-    return render(request, 'monitratoslab/index.html',
-                  {'experiencias': experiencias, 'utilizador': utilizador, 'param_adicionais': param_adicionais})
+def autenticacao(request):
+    return render(request, 'monitratoslab/autenticacao.html')
 
 
 def conexaobd(request):

@@ -8,6 +8,7 @@ urlpatterns = [
     path('paginalogout', views.paginalogout, name='paginalogout'),
     path('novaexperiencia/', views.novaexperiencia, name='novaexperiencia'),
     path('detalheexperiencia/', views.detalheexperiencia, name='detalheexperiencia'),
+    path('autenticacao', views.autenticacao, name='autenticacao'),
 
 
 ]
