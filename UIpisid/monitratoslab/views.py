@@ -7,7 +7,7 @@ from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout
 from django.utils import timezone
 
-from .models import Experiencia, Utilizador, Parametrosadicionais
+from .models import Experiencia, Utilizador, Parametrosadicionais, Odoresexperiencia
 
 import pymysql
 
@@ -68,12 +68,10 @@ def paginalogout(request):
 def novaexperiencia(request):
     fechtbd = conexaobd(request)
     salas = fechtbd[0][0]
-    num_salas = list(range(1, salas))
+    num_salas = list(range(1, salas+1))
     context = {'num_salas': num_salas}
     if request.method == 'POST':
-        for i in range(num_salas):
-            sala = request.POST.get(f'sala_{i}', '')
-            num_salas.append(sala)
+
         experiencia = Experiencia()
         experiencia.descricao = request.POST['descricao']
         experiencia.investigador = request.user.email
@@ -84,6 +82,13 @@ def novaexperiencia(request):
         experiencia.temperaturaideal = request.POST['temperaturaideal']
         experiencia.variacaotemperaturamaxima = request.POST['variacaotemperaturamaxima']
         experiencia.save()
+
+        for i in num_salas:
+            odoresexperiencia = Odoresexperiencia()
+            odoresexperiencia.sala = i
+            odoresexperiencia.idexperiencia = experiencia
+            odoresexperiencia.codigoodor = request.POST.get(f'sala_{i}', '')
+            odoresexperiencia.save()
 
         return redirect('monitratoslab:detalheexperiencia')
     else:
