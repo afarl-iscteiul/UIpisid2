@@ -39,6 +39,9 @@
     <!--    </style>-->
 </head>
 <body>
+{% if error_message %}
+    <div style="color: red" class="alert alert-danger">{{ error_message }}</div>
+{% endif %}
 
 <h1>Registo de nova experiência</h1>
 <h2>Formulário:</h2>
@@ -88,23 +91,24 @@
                 <label for="ratossemsubstancias">Número de ratos sem substâncias injetadas:</label>
                 <input type="number" id="ratossemsubstancias" name="ratossemsubstancias" required>
             </p>
-            <!--            ANTIGO CODIGO PARA ADICIONAR SUBSTANCIAS-->
-            <!--            <div>-->
-            <!--                <div id="linha">-->
-            <!--                    <label class="number"></label>-->
-            <!--                    <label for="substancia_1">Substância_{{ number }}:</label>-->
-            <!--                    <input type="text" id="substancia_1" name="substancia_1" required>-->
-            <!--                    <label for="numeroratossubstancia_1">Número de ratos:</label>-->
-            <!--                    <input type="number" id="numeroratossubstancia_1" name="numeroratossubstancia_1" required>-->
-            <!--                    <button id="DeleteRow" type="button">Remover</button>-->
-            <!--                    <label class="number"></label>-->
+            <div name="ANTIGO CODIGO PARA ADICIONAR SUBSTANCIAS">
+                <!--            <div>-->
+                <!--                <div id="linha">-->
+                <!--                    <label class="number"></label>-->
+                <!--                    <label for="substancia_1">Substância_{{ number }}:</label>-->
+                <!--                    <input type="text" id="substancia_1" name="substancia_1" required>-->
+                <!--                    <label for="numeroratossubstancia_1">Número de ratos:</label>-->
+                <!--                    <input type="number" id="numeroratossubstancia_1" name="numeroratossubstancia_1" required>-->
+                <!--                    <button id="DeleteRow" type="button">Remover</button>-->
+                <!--                    <label class="number"></label>-->
 
-            <!--                </div>-->
-            <!--                <div id="newinput"></div>-->
-            <!--                <button id="rowAdder" type="button">Adicionar</button>-->
-            <!--            </div>-->
+                <!--                </div>-->
+                <!--                <div id="newinput"></div>-->
+                <!--                <button id="rowAdder" type="button">Adicionar</button>-->
+                <!--            </div>-->
 
-            <!--    #CAMPO NOVO PARA ADICIONAR SUBSTANCIAS-->
+                <!--    #CAMPO NOVO PARA ADICIONAR SUBSTANCIAS-->
+            </div>
             <div id="input_fields">
                 <div>
                     <label for="substancia">Substancia:</label>
@@ -114,6 +118,7 @@
                 </div>
             </div>
             <button id="add_button" type="button">Adicionar</button>
+
             <!--  ###    ###    ###   ###       ###    ###    ###   ###  -->
         </div>
     </div>
@@ -157,6 +162,7 @@
     <!--    <button type="submit">Enviar</button>-->
     <input type="submit" value="Criar">
 </form>
+
 <br>
 <!--JAVASCRIPS ANTIGO-->
 <script type="text/javascript">
@@ -199,7 +205,6 @@
                 '</div>';
             $(wrapper).append(newInput);
         });
-
 
         // Remove the corresponding set of input fields when the "Remove" link is clicked
         $(wrapper).on('click', '.remove_field', function (e) {

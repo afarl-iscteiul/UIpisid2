@@ -79,45 +79,57 @@ def novaexperiencia(request):
     num_salas = list(range(1, salas + 1))
     context = {'num_salas': num_salas}
     if request.method == 'POST':
-
-        experiencia = Experiencia()
-        experiencia.descricao = request.POST['descricao']
-        experiencia.investigador = request.user.email
-        experiencia.datahora = datetime.now()
-        experiencia.numeroratos = request.POST['numeroratos']
-        experiencia.limiteratossala = request.POST['limiteratossala']
-        experiencia.segundossemmovimento = request.POST['segundossemmovimento']
-        experiencia.temperaturaideal = request.POST['temperaturaideal']
-        experiencia.variacaotemperaturamaxima = request.POST['variacaotemperaturamaxima']
-        experiencia.save()
-
-        for i in num_salas:
-            odoresexperiencia = Odoresexperiencia()
-            odoresexperiencia.sala = i
-            odoresexperiencia.idexperiencia = experiencia
-            odoresexperiencia.codigoodor = request.POST.get(f'sala_{i}', '')
-            odoresexperiencia.save()
-
-        # ADICIONA SUBSTANCIA
-        substancia = request.POST.getlist('substancia[]')
         numratos = request.POST.getlist('numratos[]')
-        substanciasexperiencia = Substanciasexperiencia()
-        for i in range(len(substancia)):
-            substanciasexperiencia.codigosubstancia = substancia[i]
-            substanciasexperiencia.numeroratos = numratos[i]
-            substanciasexperiencia.idexperiencia = experiencia
-            substanciasexperiencia.save()
-        # FIM ADICIONA SUBSTANCIA
+        total_rats = sum([int(nr) for nr in numratos]) + int(request.POST['ratossemsubstancias'])
 
-        return redirect('monitratoslab:detalheexperiencia')
+        if total_rats == int(request.POST['numeroratos']):
+
+            experiencia = Experiencia()
+            experiencia.descricao = request.POST['descricao']
+            experiencia.investigador = request.user.email
+            experiencia.datahora = datetime.now()
+            experiencia.numeroratos = request.POST['numeroratos']
+            experiencia.limiteratossala = request.POST['limiteratossala']
+            experiencia.segundossemmovimento = request.POST['segundossemmovimento']
+            experiencia.temperaturaideal = request.POST['temperaturaideal']
+            experiencia.variacaotemperaturamaxima = request.POST['variacaotemperaturamaxima']
+            experiencia.save()
+
+            # ADICIONA SUBSTANCIA
+            substancia = request.POST.getlist('substancia[]')
+            numratos = request.POST.getlist('numratos[]')
+            substanciasexperiencia = Substanciasexperiencia()
+            substanciasexperiencia.idexperiencia = experiencia
+            substanciasexperiencia.codigosubstancia = "Limpo"
+            substanciasexperiencia.numeroratos = request.POST['ratossemsubstancias']
+
+            for i in range(len(substancia)):
+                substanciasexperiencia.codigosubstancia = substancia[i]
+                substanciasexperiencia.numeroratos = numratos[i]
+                substanciasexperiencia.idexperiencia = experiencia
+                substanciasexperiencia.save()
+
+
+            # FIM ADICIONA SUBSTANCIA
+            for i in num_salas:
+                odoresexperiencia = Odoresexperiencia()
+                odoresexperiencia.sala = i
+                odoresexperiencia.idexperiencia = experiencia
+                odoresexperiencia.codigoodor = request.POST.get(f'sala_{i}', '')
+                odoresexperiencia.save()
+            return redirect('monitratoslab:detalheexperiencia', experiencia.idexperiencia)
+        else:
+            context['error_message'] = 'O número total de ratos deve corresponder ao número de ratos especificado para cada substância!'
+            return render(request, 'monitratoslab/novaexperiencia.html', context)
+
     else:
         return render(request, 'monitratoslab/novaexperiencia.html', context)
 
 
-def detalheexperiencia(request):
-    # experiencia = get_object_or_404(Experiencia, idexperiencia=experiencia_id)
-    # context = {'experiencia': experiencia}
-    return render(request, 'monitratoslab/detalheexperiencia.html', )
+def detalheexperiencia(request, experiencia_id):
+    experiencia = get_object_or_404(Experiencia, pk=experiencia_id)
+    context = {'experiencia': experiencia}
+    return render(request, 'monitratoslab/detalheexperiencia.html', context)
 
 
 def selecionarutilizador(request):
