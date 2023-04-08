@@ -117,6 +117,13 @@ def novaexperiencia(request):
                 odoresexperiencia.idexperiencia = experiencia
                 odoresexperiencia.codigoodor = request.POST.get(f'sala_{i}', '')
                 odoresexperiencia.save()
+
+            #REGISTAR MODO DE ALERTAS
+               # = request.POST['periodicidade']
+               #  = request.POST['gravidade']
+
+
+
             return redirect('monitratoslab:detalheexperiencia', experiencia.idexperiencia)
         else:
             context['error_message'] = 'O número total de ratos deve corresponder ao número de ratos especificado para cada substância!'
