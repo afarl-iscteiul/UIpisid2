@@ -14,9 +14,9 @@
         <div class="form">
             <form action="{% url 'monitratoslab:paginalogin' %}" method="post">
                 {% csrf_token %}
-                <input class="input" type="text" name="username" id="username_id" placeholder="Email do utilizador"/>
+                <input class="input" type="text" name="username" id="username_id" placeholder="Utilizador"/>
                 <br>
-                <input class="input" type="text" name="password" id="password_id" placeholder="Password"/>
+                <input class="input" type="password" name="password" id="password_id" placeholder="Password"/>
                 <br>
                 <input type="submit" value="Login" />
             </form>

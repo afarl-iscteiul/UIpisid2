@@ -27,7 +27,7 @@
                     <button> Logout </button>
                 </a>
 <!--            CARF - Falta mudar o URL-->
-                <a href="{% url 'monitratoslab:paginalogout' %}">
+                <a href="{% url 'monitratoslab:novaexperiencia' %}">
                     <button> Nova Experiência </button>
                 </a>
             </div>
@@ -48,7 +48,11 @@
             </tr>
             {% for e in experiencias %}
                 <tr>
-                    <th>{{e.idexperiencia}}</th>
+                    <th>
+                        <a href="{% url 'monitratoslab:detalheexperiencia' e.idexperiencia %}">
+                            {{e.idexperiencia}}
+                        </a>
+                    </th>
                     <th>{{e.datahora}}</th>
                     <th>{{e.descricao}}</th>
                     {% for p in param_adicionais %}

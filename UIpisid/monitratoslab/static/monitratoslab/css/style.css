@@ -22,6 +22,14 @@ table{
     border-collapse: collapse;
 }
 
+td.cell-label {
+    width: 20%;
+}
+
+td.cell-alertas {
+    width: 50%;
+}
+
 /*Aside*/
 body aside {
     width: 10%;

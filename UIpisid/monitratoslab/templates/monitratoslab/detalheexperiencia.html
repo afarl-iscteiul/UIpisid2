@@ -2,10 +2,104 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Resumo experiência</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'monitratoslab/css/style.css' %}" />
 </head>
 <body>
-<h1>Experiencia: {{ experiencia.idexperiencia }}, criada com sucesso!</h1>
+    <h1>Experiencia: {{ experiencia.idexperiencia }}</h1>
+    <h2>Resumo:</h2>
+    <table border="1">
+        <thead>
+            <tr>
+                <th rowspan="2">Data Registo</th>
+                <th rowspan="2">Data Início</th>
+                <th rowspan="2">Data Fim</th>
+                <th colspan="2">Modo de Alerta</th>
+            </tr>
+            <tr>
+                <th>Periodicidade</th>
+                <th>Gravidade</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th>{{ experiencia.datahora }}</th>
+                {% for p in param_adicionais %}
+                    {% if experiencia.idexperiencia == p.idexperiencia %}
+                        {% if p.datahorainicio == None %}
+                            <th></th>
+                        {% else %}
+                            <th>{{p.datahorainicio}}</th>
+                        {% endif %}
+                        {% if p.datahorafim == None %}
+                            <th></th>
+                        {% else %}
+                            <th>{{p.datahorafim}}</th>
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+<!--            CARF - Fazer quando tiver o níveis de alerta feitos-->
+                <th></th>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>Formulário:</h2>
+    <form method="post" class="registo">
+        {% csrf_token %}
+        {% for p in param_adicionais %}
+            {% if experiencia.idexperiencia == p.idexperiencia %}
+                {% if p.datahorainicio == None %}
+
+<!--            CARF - FALTA A PARTE EM QUE A EXPERIÊNCIA AINDA NÃO COMEÇOU E OS DADOS PODEM SER ALTERADOS-->
+
+                {% else %}
+
+                    <fieldset>
+                        <legend>Dados gerais:</legend>
+                        <div class="row">
+                            <div class="column">
+                                <table>
+                                    <tr>
+                                        <td class="cell-label"><label for="numeroratos">Número de ratos:</label></td>
+                                        <td><input type="number" id="numeroratos" name="numeroratos" placeholder={{experiencia.numeroratos}} disabled="disabled"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="cell-label"><label for="temperaturaideal">Temperatura ideal (ºC):</label></td>
+                                        <td><input type="number" id="temperaturaideal" name="temperaturaideal" placeholder={{experiencia.temperaturaideal}} disabled="disabled"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="cell-label"><label for="variacaotemperaturamaxima">Variação da temperatura máxima(ºC):</label></td>
+                                        <td><input type="number" id="variacaotemperaturamaxima" name="variacaotemperaturamaxima" placeholder={{experiencia.variacaotemperaturamaxima}} disabled="disabled"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="cell-label"><label for="segundossemmovimento">Tempo sem movimento(s):</label></td>
+                                        <td><input type="number" id="segundossemmovimento" name="segundossemmovimento" placeholder={{experiencia.segundossemmovimento}} disabled="disabled"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="cell-label"><label for="limiteratossala">Número máximo de ratos por sala:</label></td>
+                                        <td><input type="number" id="limiteratossala" name="limiteratossala" placeholder={{experiencia.limiteratossala}} disabled="disabled"></td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="column">
+                                <table>
+                                    <tr>
+                                        <td class="cell-label"><label for="descricao">Descrição:</label></td>
+                                        <td><textarea id="descricao" name="descricao" rows="2" cols="80" placeholder={{experiencia.descricao}} disabled="disabled"></textarea></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </fieldset>
+
+
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+    </form>
+
 
 </body>
 </html>

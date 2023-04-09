@@ -15,25 +15,17 @@ import pymysql
 # Create your views here.
 def index(request):
     utilizador = selecionarutilizador(request)  # CARF - Pode estar numa session, menos pesquisas na base de dados
-    experiencias = Experiencia.objects.filter(investigador=utilizador.emailutilizador).values('idexperiencia',
-                                                                                              'datahora', 'descricao')
+    experiencias = Experiencia.objects.filter(investigador=utilizador.emailutilizador).values('idexperiencia', 'datahora', 'descricao')
     if experiencias.count() > 0:
         flag = True
         for i in experiencias:
             id = i['idexperiencia']
             if flag:
-                param_adicionais = Parametrosadicionais.objects.filter(idexperiencia=id).values('idexperiencia',
-                                                                                                'datahorainicio',
-                                                                                                'datahorafim',
-                                                                                                'razaofim')
+                param_adicionais = Parametrosadicionais.objects.filter(idexperiencia=id).values('idexperiencia', 'datahorainicio', 'datahorafim', 'razaofim')
                 flag = False
             else:
-                param_adicionais |= Parametrosadicionais.objects.filter(idexperiencia=id).values('idexperiencia',
-                                                                                                 'datahorainicio',
-                                                                                                 'datahorafim',
-                                                                                                 'razaofim')
-    return render(request, 'monitratoslab/index.html',
-                  {'param_adicionais': param_adicionais, 'experiencias': experiencias, 'utilizador': utilizador})
+                param_adicionais |= Parametrosadicionais.objects.filter(idexperiencia=id).values('idexperiencia', 'datahorainicio', 'datahorafim', 'razaofim')
+    return render(request, 'monitratoslab/index.html', {'param_adicionais': param_adicionais, 'experiencias': experiencias, 'utilizador': utilizador})
 
 
 def autenticacao(request):
@@ -77,6 +69,9 @@ def paginalogout(request):
     return HttpResponseRedirect(reverse('monitratoslab:paginalogin'))
 
 
+def paginanovaexperiencia(request):
+    return render(request, 'monitratoslab/novaexperiencia.html')
+
 def novaexperiencia(request):
     fechtbd = conexaobd(request)
     salas = fechtbd[0][0]
@@ -106,13 +101,14 @@ def novaexperiencia(request):
             substanciasexperiencia.idexperiencia = experiencia
             substanciasexperiencia.codigosubstancia = "Limpo"
             substanciasexperiencia.numeroratos = request.POST['ratossemsubstancias']
+            substanciasexperiencia.save()
 
             for i in range(len(substancia)):
+                substanciasexperiencia = Substanciasexperiencia()
                 substanciasexperiencia.codigosubstancia = substancia[i]
                 substanciasexperiencia.numeroratos = numratos[i]
                 substanciasexperiencia.idexperiencia = experiencia
                 substanciasexperiencia.save()
-
 
             # FIM ADICIONA SUBSTANCIA
             for i in num_salas:
@@ -124,13 +120,13 @@ def novaexperiencia(request):
 
             #REGISTAR MODO DE ALERTAS
                # = request.POST['periodicidade']
-               #  = request.POST['gravidade']
-
-
+               # = request.POST['gravidade']
 
             return redirect('monitratoslab:detalheexperiencia', experiencia.idexperiencia)
         else:
-            context['error_message'] = 'O número total de ratos deve corresponder ao número de ratos especificado para cada substância!'
+            # CARF - Quando o número de ratos não é verificado, o formulário é limpo. Resolver isto se existir tempo
+            # CARF - https://cursos.alura.com.br/forum/topico-redirect-limpando-form-quando-mensagem-e-de-erro-128843
+            context['error_message'] = 'A soma dos ratos especificados nos campos de substâncias administradas deve ser igual ao número total de ratos!'
             return render(request, 'monitratoslab/novaexperiencia.html', context)
 
     else:
@@ -139,7 +135,8 @@ def novaexperiencia(request):
 
 def detalheexperiencia(request, experiencia_id):
     experiencia = get_object_or_404(Experiencia, pk=experiencia_id)
-    context = {'experiencia': experiencia}
+    param_adicionais = Parametrosadicionais.objects.filter(idexperiencia=experiencia_id).values('idexperiencia', 'datahorainicio', 'datahorafim', 'razaofim')
+    context = {'experiencia':experiencia, 'param_adicionais':param_adicionais}
     return render(request, 'monitratoslab/detalheexperiencia.html', context)
 
 
@@ -147,6 +144,8 @@ def selecionarutilizador(request):
     mail_request_user = request.user.email
     utilizador = Utilizador.objects.get(emailutilizador__startswith=mail_request_user)
     return utilizador
+
+
 
 # q = Experiencia(descricao = "estrato de hibisco", investigador = "adelade", datahora =timezone.now(), numeroratos = 10, limiteratossala = 20, segundossemmovimento = 5, temperaturaideal = 35, variacaotemperaturamaxima = 6)
 # q.save()
