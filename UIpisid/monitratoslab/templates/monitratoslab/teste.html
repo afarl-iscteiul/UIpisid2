@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'monitratoslab/css/style.css' %}" />
+</head>
+<body>
+    <h1>Registo de nova experiência</h1>
+    <h2>Formulário:</h2>
+
+    {% block content %}
+        <div class="formEXP">
+            <form method="post" action="{% url 'monitratoslab:novaexperiencia' %}">
+
+                <fieldset id="dados-gerais">
+                    <legend>Dados Gerais:</legend>
+                    <div class="row">
+                        <div class="column">
+                            <label for="numeroratos">Número de Ratos:</label>
+                            <input type="number" id="numeroratos" name="numeroratos" required>
+                            <br>
+                            <label for="temperaturaideal">Temperatura Ideal (ºC):</label>
+                            <input type="number" id="temperaturaideal" name="temperaturaideal" step="0.01" required>
+                            <br>
+                            <label for="variacaotemperaturamaxima">Variação da Temperatura Máxima(ºC):</label>
+                            <input type="number" id="variacaotemperaturamaxima" name="variacaotemperaturamaxima" step="0.01" required>
+                            <br>
+                            <label for="segundossemmovimento">Tempo sem Movimento(s):</label>
+                            <input type="number" id="segundossemmovimento" name="segundossemmovimento" required>
+                            <br>
+                            <label for="limiteratossala">Número máximo de ratos por Sala:</label>
+                            <input type="number" id="limiteratossala" name="limiteratossala" required>
+                            <br>
+                            <label for="descricao">Descrição:</label>
+                            <textarea id="descricao" name="descricao" rows="4" cols="50"></textarea>
+                        </div>
+                    </div>
+                </fieldset>
+
+                <fieldset id="dados-salas">
+                    <legend>Registo de odores nas salas:</legend>
+                    {% for i in num_salas %}
+                        <label for="sala_{{ i }}">Sala {{ i }}:</label>
+                        <input type="text" id="sala_{{ i }}" name="sala_{{ i }}">
+                        <br>
+                    {% endfor %}
+                </fieldset>
+
+
+
+            </form>
+        </div>
+    {% endblock %}
+
+
+</body>
+</html>

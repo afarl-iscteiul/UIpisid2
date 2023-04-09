@@ -3,216 +3,154 @@
 <head>
     <meta charset="UTF-8">
     <title>Registo de nova experiência</title>
-
-    <!--    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">-->
-    <!--    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">-->
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'monitratoslab/css/style.css' %}" />
     <script src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-
-    <!--    <style>-->
-    <!--        form {-->
-    <!--            display: table;-->
-    <!--        }-->
-
-    <!--        p {-->
-    <!--            display: table-row;-->
-    <!--        }-->
-
-    <!--        label {-->
-    <!--            display: table-cell;-->
-    <!--        }-->
-
-    <!--        input {-->
-    <!--            display: table-cell;-->
-    <!--        }-->
-
-    <!--        .column {-->
-    <!--            float: left;-->
-    <!--            width: 50%;-->
-    <!--        }-->
-
-    <!--        /* Clear floats after the columns */-->
-    <!--        .row:after {-->
-    <!--            content: "";-->
-    <!--            display: table;-->
-    <!--            clear: both;-->
-    <!--        }-->
-    <!--    </style>-->
 </head>
 <body>
-{% if error_message %}
-    <div style="color: red" class="alert alert-danger">{{ error_message }}</div>
-{% endif %}
+    {% if error_message %}
+        <div style="color: red" class="alert alert-danger">{{ error_message }}</div>
+    {% endif %}
 
-<h1>Registo de nova experiência</h1>
-<h2>Formulário:</h2>
-<form method="post" action="{% url 'monitratoslab:novaexperiencia' %}">
-    {% csrf_token %}
-    <div class="row">
-        <div class="column">
-            <p>
-                <label for="numeroratos">Número de Ratos:</label>
-                <input type="number" id="numeroratos" name="numeroratos" required>
-            </p>
-            <p>
-                <label for="temperaturaideal">Temperatura Ideal (ºC):</label>
-                <input type="number" id="temperaturaideal" name="temperaturaideal" step="0.01" required>
-            </p>
-            <p>
-                <label for="variacaotemperaturamaxima">Variação da Temperatura Máxima(ºC):</label>
-                <input type="number" id="variacaotemperaturamaxima" name="variacaotemperaturamaxima" step="0.01"
-                       required>
-            </p>
-            <p>
-                <label for="segundossemmovimento">Tempo sem Movimento(s):</label>
-                <input type="number" id="segundossemmovimento" name="segundossemmovimento" required>
-            </p>
-            <p>
-                <label for="limiteratossala">Número máximo de ratos por Sala:</label>
-                <input type="number" id="limiteratossala" name="limiteratossala" required>
-            </p>
-        </div>
-        <div class="column">
-            <label for="descricao">Descrição:</label>
-            <textarea id="descricao" name="descricao" rows="4" cols="50"></textarea>
-        </div>
-    </div>
-    <div>
-        <div name="Registo de odores nas salas" class="column">
-            <h2>Registo de odores nas salas</h2>
-            {% for i in num_salas %}
-            <label for="sala_{{ i }}">Sala {{ i }}:</label>
-            <input type="text" id="sala_{{ i }}" name="sala_{{ i }}">
-            <br>
-            {% endfor %}
-        </div>
-        <div name="Registo de substancias administradas aos ratos" class="column">
-            <h2>Registo de substancias administradas aos ratos</h2>
-            <p>
-                <label for="ratossemsubstancias">Número de ratos sem substâncias injetadas:</label>
-                <input type="number" id="ratossemsubstancias" name="ratossemsubstancias" required>
-            </p>
-            <div name="ANTIGO CODIGO PARA ADICIONAR SUBSTANCIAS">
-                <!--            <div>-->
-                <!--                <div id="linha">-->
-                <!--                    <label class="number"></label>-->
-                <!--                    <label for="substancia_1">Substância_{{ number }}:</label>-->
-                <!--                    <input type="text" id="substancia_1" name="substancia_1" required>-->
-                <!--                    <label for="numeroratossubstancia_1">Número de ratos:</label>-->
-                <!--                    <input type="number" id="numeroratossubstancia_1" name="numeroratossubstancia_1" required>-->
-                <!--                    <button id="DeleteRow" type="button">Remover</button>-->
-                <!--                    <label class="number"></label>-->
-
-                <!--                </div>-->
-                <!--                <div id="newinput"></div>-->
-                <!--                <button id="rowAdder" type="button">Adicionar</button>-->
-                <!--            </div>-->
-
-                <!--    #CAMPO NOVO PARA ADICIONAR SUBSTANCIAS-->
-            </div>
-            <div id="input_fields">
-                <div>
-                    <label for="substancia">Substancia:</label>
-                    <input type="text" id="substancia" name="substancia[]">
-                    <label for="numratos">Número de ratos:</label>
-                    <input type="number" id="numratos" name="numratos[]">
+    <h1>Registo de nova experiência</h1>
+    <h2>Formulário:</h2>
+    <form method="post" action="{% url 'monitratoslab:novaexperiencia' %}" class="registo">
+        {% csrf_token %}
+        <fieldset id="dados-gerais">
+            <legend>Dados gerais:</legend>
+            <div class="row">
+                <div class="column">
+                    <table>
+                        <tr>
+                            <td><label for="numeroratos">Número de ratos:</label></td>
+                            <td><input type="number" id="numeroratos" name="numeroratos" required></td>
+                        </tr>
+                        <tr>
+                            <td><label for="temperaturaideal">Temperatura ideal (ºC):</label></td>
+                            <td><input type="number" id="temperaturaideal" name="temperaturaideal" step="0.01" required></td>
+                        </tr>
+                        <tr>
+                            <td><label for="variacaotemperaturamaxima">Variação da temperatura máxima(ºC):</label></td>
+                            <td><input type="number" id="variacaotemperaturamaxima" name="variacaotemperaturamaxima" step="0.01" required></td>
+                        </tr>
+                        <tr>
+                            <td><label for="segundossemmovimento">Tempo sem movimento(s):</label></td>
+                            <td><input type="number" id="segundossemmovimento" name="segundossemmovimento" required></td>
+                        </tr>
+                        <tr>
+                            <td><label for="limiteratossala">Número máximo de ratos por sala:</label></td>
+                            <td><input type="number" id="limiteratossala" name="limiteratossala" required></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="column">
+                    <label for="descricao">Descrição:</label>
+                    <textarea id="descricao" name="descricao" rows="4" cols="100"></textarea>
                 </div>
             </div>
-            <button id="add_button" type="button">Adicionar</button>
+        </fieldset>
 
-            <!--  ###    ###    ###   ###       ###    ###    ###   ###  -->
+        <div>
+            <fieldset id="dados-salas">
+                <legend>Registo de odores nas salas:</legend>
+                <div name="Registo de odores nas salas" class="column">
+                    {% for i in num_salas %}
+                    <label for="sala_{{ i }}">Sala {{ i }}:</label>
+                    <input type="text" id="sala_{{ i }}" name="sala_{{ i }}">
+                    <br>
+                    {% endfor %}
+                </div>
+            </fieldset>
+            <fieldset id="dados-substancias">
+                <legend>Registo de substancias administradas aos ratos:</legend>
+                <div name="Registo de substancias administradas aos ratos" class="column">
+                    <label for="ratossemsubstancias">Número de ratos sem substâncias injetadas:</label>
+                    <input type="number" id="ratossemsubstancias" name="ratossemsubstancias" required>
+                    <br>
+                    <div id="input_fields">
+                        <div>
+                            <label for="substancia">Substancia:</label>
+                            <input type="text" id="substancia" name="substancia[]">
+                            <label for="numratos">Número de ratos:</label>
+                            <input type="number" id="numratos" name="numratos[]">
+                        </div>
+                    </div>
+                    <button id="add_button" type="button">Adicionar</button>
+                </div>
+            </fieldset>
         </div>
-    </div>
-    <div class="row" name="modo de alertas">
-        <h2>Modo de Alertas</h2>
-        <div class="column" name="periodicidade_">
-            <h3>Periodicidade</h3>
-            <p>
-                <input type="radio" id="maxima" name="periodicidade" value="maxima">
-                <label for="maxima">Máxima</label>
-            </p>
-            <p>
-                <input type="radio" id="media" name="periodicidade" value="media">
-                <label for="media">Média</label>
-            </p>
+        <fieldset id="dados-alerta">
+            <legend>Modos de alertas</legend>
+            <div class="row" name="modo de alertas">
+                <table>
+                    <tr>
+                        <td>
+                            <fieldset id="periodicidade">
+                                <legend>Periodicidade</legend>
+                                    <div class="column" name="periodicidade_">
+                                    <input type="radio" class="radio-btn" id="maxima" name="periodicidade" value="maxima" checked>
+                                    <label for="maxima">Máxima</label>
+                                    <br>
+                                    <input type="radio" class="radio-btn" id="media" name="periodicidade" value="media">
+                                    <label for="media">Média</label>
+                                    <br>
+                                    <input type="radio" class="radio-btn" id="minima" name="periodicidade" value="minima">
+                                    <label for="minima">Mínima</label>
+                                </div>
+                            </fieldset>
+                        </td>
+                        <td>
+                            <fieldset id="gravidade">
+                                <legend>Gravidade</legend>
+                                <div class="column" name="gravidade">
+                                    <input type="radio" class="radio-btn" id="grav_alta" name="gravidade" value="grav_alta" checked>
+                                    <label for="grav_alta">Alta</label>
+                                    <br>
+                                    <input type="radio" class="radio-btn" id="grav_media" name="gravidade" value="grav_media">
+                                    <label for="media">Média e superiores</label>
+                                    <br>
+                                    <input type="radio" class="radio-btn" id="grav_baixa" name="gravidade" value="grav_baixa">
+                                    <label for="grav_baixa">Baixa e superiores</label>
+                                </div>
+                            </fieldset>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </fieldset>
+        <fieldset class="btn">
+        <input type="submit" value="Registar">
+        <input type="reset" value="Limpar">
+<!--    CARF - Falta mudar o URL-->
+        <a href="{% url 'monitratoslab:paginalogout' %}">
+            <button class="btn"> Cancelar </button>
+        </a>
+        </fieldset>
+    </form>
+    <br>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            var addButton = $('#add_button');
+            var wrapper = $('#input_fields');
 
-            <p>
-                <input type="radio" id="minima" name="periodicidade" value="minima">
-                <label for="minima">Mínima</label>
-            </p>
-        </div>
-        <div class="column" name="gravidade_">
-            <h3>Gravidade</h3>
-            <p>
-                <input type="radio" id="grav_alta" name="gravidade" value="grav_alta">
-                <label for="grav_alta">Alta</label>
-            </p>
-            <p>
-                <input type="radio" id="grav_media" name="gravidade" value="grav_media">
-                <label for="media">Média e superiores</label>
-            </p>
+            // Add a new set of input fields when the "Add" button is clicked
+            $(addButton).click(function () {
+                // var newInput = '<div><input type="text" name="name[]" placeholder="Name"><input type="text" name="age[]" placeholder="Age"><a href="#" class="remove_field">Remove</a></div>';
+                var newInput = '<div>' +
+                    '<label htmlFor="substancia">Substancia: </label><input type="text" name="substancia[]">' + ' ' +
+                    '<label htmlFor="numratos">Número de ratos: </label><input type="text" name="numratos[]">' +
+                    '<button href="#" class="remove_field" type="button">Remover</button>' +
+                    '</div>';
+                $(wrapper).append(newInput);
+            });
 
-            <p>
-                <input type="radio" id="grav_baixa" name="gravidade" value="grav_baixa">
-                <label for="grav_baixa">Baixa e superiores</label>
-            </p>
-        </div>
-    </div>
-
-    <!--    <button type="submit">Enviar</button>-->
-    <input type="submit" value="Criar">
-</form>
-
-<br>
-<!--JAVASCRIPS ANTIGO-->
-<script type="text/javascript">
-
-    $(".number").each(function (index) {
-        let n = index + 1;
-        $(this).text(n);
-    });
-
-    $("#rowAdder").click(function () {
-        newRowAdd =
-            '<div id="linha">' +
-            '<label class="number" for="substancia_{{number}}">Substância: </label><input class="number" type="text" id="substancia_{{number}}" name="substancia_{{number}}" required>' +
-            '<label class="number" for="numeroratossubstancia_{{number}}"> Número de ratos: </label><input class="number" type="number" id="numeroratossubstancia_{{number}}" name="numeroratossubstancia_{{number}}" required>' +
-            ' ' + '<button id="DeleteRow" type="button">Remover</button></div>';
-
-        $('#newinput').append(newRowAdd);
-    });
-
-    $("body").on("click", "#DeleteRow", function () {
-        $(this).parents("#linha").remove();
-    })
-    //     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-</script>
-<!--FIM JAVASCRIPT ANTIGO-->
-<!--JAVASCRIP NOVO-->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-    $(document).ready(function () {
-        var addButton = $('#add_button');
-        var wrapper = $('#input_fields');
-
-        // Add a new set of input fields when the "Add" button is clicked
-        $(addButton).click(function () {
-            // var newInput = '<div><input type="text" name="name[]" placeholder="Name"><input type="text" name="age[]" placeholder="Age"><a href="#" class="remove_field">Remove</a></div>';
-            var newInput = '<div>' +
-                '<label htmlFor="substancia">Substancia: </label><input type="text" name="substancia[]">' + ' ' +
-                '<label htmlFor="numratos">Número de ratos: </label><input type="text" name="numratos[]">' +
-                '<button href="#" class="remove_field" type="button">Remover</button>' +
-                '</div>';
-            $(wrapper).append(newInput);
+            // Remove the corresponding set of input fields when the "Remove" link is clicked
+            $(wrapper).on('click', '.remove_field', function (e) {
+                e.preventDefault();
+                $(this).parent('div').remove();
+            });
         });
-
-        // Remove the corresponding set of input fields when the "Remove" link is clicked
-        $(wrapper).on('click', '.remove_field', function (e) {
-            e.preventDefault();
-            $(this).parent('div').remove();
-        });
-    });
-</script>
-<!--FIM JAVASCRIPT NOVO-->
-
+    </script>
 </body>
 </html>

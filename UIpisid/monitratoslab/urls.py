@@ -10,6 +10,7 @@ urlpatterns = [
     # path('detalheexperiencia/', views.detalheexperiencia, name='detalheexperiencia'),
     path('detalheexperiencia/<int:experiencia_id>/', views.detalheexperiencia, name='detalheexperiencia'),
     path('autenticacao', views.autenticacao, name='autenticacao'),
+    path('teste', views.teste, name='teste'),
 
 
 ]

@@ -11,13 +11,10 @@ form {
     text-align: center;
 }
 
-input {
-    margin-bottom: 10px;
-    width: 250px;
-    height: 35px;
-    box-sizing: border-box
+form.registo {
+    width: 100%;
+    text-align: left;
 }
-
 
 /*Tabelas*/
 table{
@@ -41,3 +38,34 @@ body aside button {
     width: 125px;
     margin-bottom: 5px;
 }
+
+button.btn {
+    width: 250px;
+    height: 35px;
+}
+
+input {
+    margin-bottom: 10px;
+    width: 250px;
+    height: 35px;
+    box-sizing: border-box
+}
+
+input.radio-btn {
+    height: 15px;
+}
+
+/*Legenda*/
+legend {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+/*Fieldset*/
+fieldset.btn {
+    text-align: center;
+    border: none;
+}
+
+
+/*TESTES*/

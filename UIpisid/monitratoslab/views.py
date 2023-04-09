@@ -40,6 +40,10 @@ def autenticacao(request):
     return render(request, 'monitratoslab/autenticacao.html')
 
 
+def teste(request):
+    return render(request, 'monitratoslab/teste.html')
+
+
 def conexaobd(request):
     # CARF - Isto não é assim muito seguro
     conn = pymysql.connect(host="194.210.86.10", user="aluno", password="aluno")
