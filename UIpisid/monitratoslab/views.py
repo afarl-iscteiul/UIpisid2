@@ -12,6 +12,8 @@ from .models import Experiencia, Utilizador, Parametrosadicionais, Odoresexperie
 import pymysql
 
 
+# Teste para testar o git
+
 # Create your views here.
 def index(request):
     utilizador = selecionarutilizador(request)  # CARF - Pode estar numa session, menos pesquisas na base de dados
